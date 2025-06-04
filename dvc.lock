@@ -5,8 +5,11 @@ stages:
     deps:
     - path: src/data_ingestion.py
       hash: md5
-      md5: c3d97a57eb6ae4f6cb792c8d398cc9ac
-      size: 2968
+      md5: 1f7f84476a4c7b7c33a7e349355d71d6
+      size: 3625
+    params:
+      params.yaml:
+        data_ingestion.test_size: 0.2
     outs:
     - path: data/raw
       hash: md5
@@ -41,38 +44,45 @@ stages:
       nfiles: 2
     - path: src/feature_engineering.py
       hash: md5
-      md5: 8861deef284b3b501084a5a759e58d8d
-      size: 3225
+      md5: 58dff522a105df91355eefe75bb2285e
+      size: 3891
+    params:
+      params.yaml:
+        feature_engineering.max_features: 35
     outs:
     - path: data/processed
       hash: md5
-      md5: 1a2296999c5750b1f3a7ca8923e095b0.dir
-      size: 1181838
+      md5: 0a4efd7bd18ecde626acba6913eca7c9.dir
+      size: 836456
       nfiles: 2
   model_building:
     cmd: python src/model_building.py
     deps:
     - path: data/processed
       hash: md5
-      md5: 1a2296999c5750b1f3a7ca8923e095b0.dir
-      size: 1181838
+      md5: 0a4efd7bd18ecde626acba6913eca7c9.dir
+      size: 836456
       nfiles: 2
     - path: src/model_building.py
       hash: md5
-      md5: 380c943b9cf19acc9f5b0f8d5d7677f5
-      size: 3856
+      md5: 93004cfa75afe75cb59e7a9797a6078f
+      size: 4432
+    params:
+      params.yaml:
+        model_building.n_estimators: 22
+        model_building.random_state: 2
     outs:
     - path: models/model.pkl
       hash: md5
-      md5: 22334c5886ff7a3dadb447dce5acf4fe
-      size: 971575
+      md5: 0c4b812570c70318376bebd9382042a3
+      size: 705267
   model_evaluation:
     cmd: python src/model_evaluation.py
     deps:
     - path: models/model.pkl
       hash: md5
-      md5: 22334c5886ff7a3dadb447dce5acf4fe
-      size: 971575
+      md5: 0c4b812570c70318376bebd9382042a3
+      size: 705267
     - path: src/model_evaluation.py
       hash: md5
       md5: 83d0ceefceb7485852a17c44e3550e53
@@ -80,5 +90,5 @@ stages:
     outs:
     - path: reports/metrics.json
       hash: md5
-      md5: f3a7c317ab7adeec8dd67460de8cb9c1
-      size: 145
+      md5: b6d95414b7e7f20736b6a1feac187f7c
+      size: 132
